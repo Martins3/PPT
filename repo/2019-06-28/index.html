@@ -10,7 +10,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Time Management</title>
+  <title>Memory Management</title>
 
   <meta name="description" content="Authoring impress.js presentations in Markdown" />
   <meta name="author" content="Henrik Ingo" />
@@ -36,17 +36,62 @@
   <div id="impress" data-transition-duration="1000">
 
 <div id="home" class="step slide markdown" data-rel-x="0" data-rel-y="900">
-#  Time Management
-首先让我们区分几个名词:
-tick 指什么东西 ?
-dynamic real-time
-timer
-periodic tick 和 dynamic tick 各自的作用是什么 ?
+# Memory Management
 
-为什么 dynamic tick 分别和 high resolution 和 low resolution 可以有关系 ?
+* 如何划分模块
+1. 物理内存管理:
+2. 进程地址空间
+3. buffer 和flush buffer(16 17 到底干什么 ?)
+4. swap 
+
+并不是很认同 16 17 18 的排布: 总体来说，17 也是flush, 但是 18 特制和swap 的flush，但是两个flush 应该使用的是同一个机制而已.
+-----
+# 物理内存管理
+
+## 你以为的物理内存管理
+ 基于 struct page 和　page frame 的一一映射，使用 buddy system 和 slab 分配器进行分配物理内存
+
+## 实际上...
+1. 需要首先探测物理内存
+2. 为了让内核映射所有的物理内存，引入high memory
+3. 为了支持DMA
+4. 为了支持NUMA
+5. kmalloc 和 vmalloc 之间的区别了解一下.
 
 -----
-本节中间的讨论的代码似乎全部都在 kernel/time 哪一个文件夹下面
+# 进程地址空间
+
+## 你以为的物理内存管理
+使用 mm_struct 和 vm_area_struct 两级管理不同属性的内存区域。
+
+## 实际上...
+1. 反向映射
+2. ...
+
+-----
+# 一些细节问题
+1. gfp flags 的作用是什么?
+https://stackoverflow.com/questions/11223523/what-is-the-meaning-of-gfp-in-kmalloc-flags
+
+
+
+
+-----
+
+# TODO
+1. 分析一下 /proc/sys/vm/ 中间的内容(越来越想知道proc 的实现原理了)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
